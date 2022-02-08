@@ -5,23 +5,8 @@ export interface DataItem {
   parentId: number
 }
 
-/** Item type as it is used in the application */
-export interface Item extends Omit<DataItem, 'parentId'> {
-  id: number
-  name: string
-  parent: Item | RootItem
-  children: Item[]
-}
+/** A map of all items */
+export type ItemMap = Map<number, DataItem>
 
-/** Root Item without a parent */
-export type RootItem = Omit<Item, 'parent'>
-
-/** Typeguard which decides Item type */
-export function isRoot(item: Item | RootItem): item is RootItem {
-  return typeof (item as Item).parent === 'undefined'
-}
-
-/** Typeguard which decides Item type */
-export function isNotRoot(item: Item | RootItem): item is Item {
-  return typeof (item as Item).parent !== 'undefined'
-}
+/** A map of children for certain item */
+export type ChildrenMap = Map<number, number[]>

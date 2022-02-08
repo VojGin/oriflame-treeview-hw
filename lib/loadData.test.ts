@@ -1,70 +1,54 @@
-import { Item, RootItem } from 'model'
+import { ChildrenMap, DataItem, ItemMap } from 'model'
 
 import { loadDataFromDataItemArray } from './loadData'
 
-const dataItemArray = [
-  {
-    "id": 5,
-    "name": "Item no. 5",
-    "parentId": 0
-  },
-  {
-    "id": 10,
-    "name": "Item no. 10",
-    "parentId": 5
-  },
-  {
-    "id": 4,
-    "name": "Item no. 4",
-    "parentId": 0
-  },
-  {
-    "id": 8,
-    "name": "Item no. 8",
-    "parentId": 5
-  }
-]
-
-const root: RootItem = {
-  id: 0,
-  name: 'Root',
-  children: [],
-}
-
-const five: Item = {
+const five: DataItem = {
   id: 5,
   name: "Item no. 5",
-  parent: root,
-  children: [],
+  parentId: 0
 }
 
-const four: Item = {
-  id: 4,
-  name: "Item no. 4",
-  parent: root,
-  children: [],
-}
-
-const ten: Item = {
+const ten: DataItem = {
   id: 10,
   name: "Item no. 10",
-  parent: five,
-  children: [],
+  parentId: 5
 }
 
+const four: DataItem = {
+  id: 4,
+  name: "Item no. 4",
+  parentId: 0
+}
 
-const eight: Item = {
-  id: 10,
+const eight: DataItem = {
+  id: 8,
   name: "Item no. 8",
-  parent: five,
-  children: [],
+  parentId: 5
 }
 
-root.children = [five, four]
-five.children = [ten, eight]
+const dataItemArray = [
+  five,
+  ten,
+  four,
+  eight,
+]
 
 describe('test loadData function', () => {
   it('loads data', () => {
-    expect(loadDataFromDataItemArray(dataItemArray)).toEqual(root)
+    const { itemMap, childrenMap } = loadDataFromDataItemArray(dataItemArray)
+
+    const customItemMap: ItemMap = new Map()
+    customItemMap.set(5, five)
+    customItemMap.set(10, ten)
+    customItemMap.set(4, four)
+    customItemMap.set(8, eight)
+
+    expect(itemMap).toEqual(customItemMap)
+
+    const customChildrenMap: ChildrenMap = new Map()
+    customChildrenMap.set(0, [5, 4])
+    customChildrenMap.set(5, [10, 8])
+
+    expect(childrenMap).toEqual(customChildrenMap)
   })
 })
