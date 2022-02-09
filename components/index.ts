@@ -1,2 +1,6 @@
 export * from './Tree'
+export * from './Root'
 export * from './Item'
+export * from './DeleteDialog'
+export * from './EditDialog'
+export * from './AddChildDialog'

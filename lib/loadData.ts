@@ -1,19 +1,20 @@
 import { DataItem } from 'model'
+import { Map } from 'immutable'
 import data from 'data/data.json'
 
 /** Loads data from DataItem array into interconnected tree structure */
 export function loadDataFromDataItemArray(dataItemArray: DataItem[]) {
-  const itemMap = new Map<number, DataItem>()
-  const childrenMap = new Map<number, number[]>()
+  let itemMap = Map<number, DataItem>()
+  let childrenMap = Map<number, number[]>()
 
   for (const dataItem of dataItemArray) {
     const { parentId, id } = dataItem
-    itemMap.set(id, dataItem)
+    itemMap = itemMap.set(id, dataItem)
 
     // insert dataItem at the end of the children array
-    const childrenArray = childrenMap.get(parentId) || []
+    const childrenArray = childrenMap.get(parentId) ?? []
     const newChildrenArray = [...childrenArray, dataItem.id]
-    childrenMap.set(parentId, newChildrenArray)
+    childrenMap = childrenMap.set(parentId, newChildrenArray)
   }
 
   const result = {
